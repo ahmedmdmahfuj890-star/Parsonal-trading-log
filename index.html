@@ -778,4 +778,8 @@ function tour(i){var o=document.getElementById("tour");if(!o){o=document.createE
 document.getElementById("help").addEventListener("click",function(){tour(0)});
 load();
 try{if(!localStorage.getItem("mh-tour-done"))tour(0)}catch(e){}
-</script></body></html>
+</script>
+<button id="totop" type="button" aria-label="Back to top" style="position:fixed;right:14px;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:40;width:44px;height:44px;border:0;border-radius:50%;font:inherit;font-size:20px;font-weight:800;color:#fff;background:linear-gradient(135deg,#0ea5e9,#6366f1);box-shadow:0 10px 24px rgba(99,102,241,.45);cursor:pointer">↑</button>
+<script>document.getElementById("totop").addEventListener("click",function(){window.scrollTo({top:0,behavior:"smooth"})});</script>
+</body>
+                                                                                                                                 </html>
