@@ -147,7 +147,7 @@ h1{background:none;color:var(--tx);-webkit-text-fill-color:initial}
 #ty.dusting::after{content:none}
 .dl{display:inline-block;-webkit-text-fill-color:currentcolor;animation:mhdust 1.3s ease-in forwards;animation-delay:var(--d)}
 .dp{position:absolute;width:3px;height:3px;border-radius:50%;opacity:0;animation:mhdust 1.2s ease-out forwards;animation-delay:var(--d)}
-@keyframes mhdust{0%{opacity:1;transform:translate(0,0) rotate(0) scale(1);filter:blur(0)}100%{opacity:0;transform:translate(var(--dx),var(--dy)) rotate(var(--r)) scale(.3);filter:blur(6px)}}
+@keyframes mhdust{0%{opacity:1;transform:none;filter:blur(0)}100%{opacity:0;transform:scale(.9);filter:blur(6px)}}
 
 .emo.no{background:var(--rdbg);border:1.5px solid var(--rd);color:var(--rd)}
 
@@ -182,7 +182,7 @@ h1{background:none;color:var(--tx);-webkit-text-fill-color:initial}
 /* ===== modern theme (final layer) ===== */
 :root:not([data-theme="x"]){--bg:#070b14;--card:rgba(17,24,39,.72);--in:#0f172a;--tx:#e6ecf5;--mut:#8a97ad;--bd:rgba(148,163,184,.16);--ink:#1e3a5f;--gn:#34d399;--rd:#f87171;--gnbg:rgba(16,185,129,.12);--gnbd:rgba(52,211,153,.35);--rdbg:rgba(239,68,68,.12);--rdbd:rgba(248,113,113,.35)}
 body{background:radial-gradient(900px 500px at 10% -10%,rgba(56,189,248,.14),transparent 60%),radial-gradient(800px 500px at 110% 10%,rgba(244,63,94,.11),transparent 60%),#070b14!important;padding:18px 16px 96px;max-width:600px;line-height:1.5;font-size:15px}
-h1{font-size:30px;font-weight:800;letter-spacing:-.03em;background:linear-gradient(90deg,#7dd3fc,#f0abfc 55%,#fda4af);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+h1{font-size:clamp(20px,6.6vw,30px);font-weight:800;letter-spacing:-.03em;white-space:nowrap;overflow:hidden;background:linear-gradient(90deg,#7dd3fc,#f0abfc 55%,#fda4af);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
 h1::after{background:linear-gradient(90deg,#38bdf8,#f472b6);width:56px;height:4px}
 h2{font-size:17px;font-weight:800;margin:30px 0 12px;letter-spacing:-.01em}
 h2::before{background:linear-gradient(#38bdf8,#f472b6);width:6px;height:18px;border-radius:6px;margin-right:10px}
@@ -249,7 +249,7 @@ button.reset{background:var(--card);border:1px solid var(--bd);border-radius:16p
 <div id="dls" style="margin-bottom:10px"><button class="reset" id="dl2" style="margin:0 0 6px;width:100%">⬇ Download PDF (all data)</button><button class="reset" id="dl" style="margin:0;width:100%">⬇ Download image (PNG)</button><button class="reset" id="bk" style="margin:6px 0 0;width:100%">⬇ Backup (সব মাসের ডেটা)</button><button class="reset" id="rs" style="margin:6px 0 0;width:100%">⬆ Restore (ব্যাকআপ ফাইল থেকে)</button><input type="file" id="rsf" accept=".json,application/json,text/plain" style="display:none"></div>
 <h2>🌍 ফরেক্স মার্কেট সেশন</h2>
 <div id="ms"><select id="mstz"></select><div class="msc"><div class="mshdr">Sessions</div><div class="msaxis" id="msaxis"></div><div class="msrows" id="msrows"></div></div><div class="mslist" id="mslist"></div><div class="msnote">সবুজ রেখা = এখন। গাঢ় বার = সেশন খোলা। শনি ও রবিবার ফরেক্স বাজার বন্ধ থাকে।</div></div>
-<p class="sub">Tap rules to cycle Y / N. Each month is saved separately on this device. A new month starts with your ending balance.</p>
+<p class="sub">Tap rules to cycle Y / N. Each month is saved separately on this device. A new month starts from 0.</p>
 
 <div class="card two">
  <div style="grid-column:1/-1"><label>Starting balance ($) <span id="startk" style="color:var(--gn)"></span></label><input id="start" type="number" inputmode="decimal"></div>
@@ -397,7 +397,7 @@ function fillSel(){msel.innerHTML="";ST.m.forEach(function(m,i){var o=document.c
 function load(){S=ST.m[ST.c];if(!S.nm)S.nm="Month "+(ST.c+1);st.value=S.s;ml.value=S.l;mn.value=S.nm;dtg.value=S.dt||"";mtg.value=S.mt||"";syncD();fillSel();mk();build();document.querySelectorAll(".stars").forEach(function(w){paintStars(w,+w.dataset.i)});document.querySelectorAll(".chk").forEach(function(w){paintChk(w)});if(window.lcLoad)window.lcLoad();if(window.updStartK)window.updStartK();update()}
 msel.addEventListener("change",function(){ST.c=+msel.value;load();save()});
 mn.addEventListener("input",function(){S.nm=mn.value;save();msel.options[ST.c].textContent=S.nm||"Month "+(ST.c+1)});
-document.getElementById("newm").addEventListener("click",function(){var b=calc().bal;if(!ask(document.getElementById("newm"),"Tap again: start with "+money(b)))return;var n=blank();n.s=b;n.l=S.l;n.dt=S.dt;n.mt=S.mt;n.nm="Month "+(ST.m.length+1);ST.m.push(n);ST.c=ST.m.length-1;load();save();window.scrollTo(0,0)});
+document.getElementById("newm").addEventListener("click",function(){var b=0;if(!ask(document.getElementById("newm"),"Tap again: start from 0"))return;var n=blank();n.s=b;n.l=S.l;n.dt=S.dt;n.mt=S.mt;n.nm="Month "+(ST.m.length+1);ST.m.push(n);ST.c=ST.m.length-1;load();save();window.scrollTo(0,0)});
 var md=document.getElementById("maxd"),dtg=document.getElementById("dtgt"),mtg=document.getElementById("mtgt");
 dtg.addEventListener("input",function(){S.dt=dtg.value;save();update()});
 mtg.addEventListener("input",function(){S.mt=mtg.value;save();update()});
@@ -568,7 +568,7 @@ sel.onchange=render;render();setInterval(render,30000);
  el.textContent="";setTimeout(step,500)})();
 var TOUR=[
 ["স্বাগতম! 👋","এটা আপনার <b>২০ দিনের ট্রেডিং জার্নাল</b>। প্রতিদিনের ট্রেড, নিয়ম মানা আর মনের অবস্থা লিখে রাখলে নিজের ভুল ধরা সহজ হয়। চলুন ছোট করে দেখে নিই কোথায় কী আছে।"],
-["মাস বেছে নিন","সবার উপরে <b>Month</b> ঘর। প্রতি মাসের আলাদা লগ থাকে। মাস শেষে <b>+ New month</b> চাপলে নতুন ২০ দিনের লগ খুলবে, আর আগের মাসের শেষ ব্যালেন্স নিজে থেকে নতুন মাসে চলে আসবে। মাসের নাম বদলাতেও পারবেন।"],
+["মাস বেছে নিন","সবার উপরে <b>Month</b> ঘর। প্রতি মাসের আলাদা লগ থাকে। মাস শেষে <b>+ New month</b> চাপলে নতুন ২০ দিনের লগ খুলবে, আর নতুন মাস ০ থেকে শুরু হবে। মাসের নাম বদলাতেও পারবেন।"],
 ["ব্যালেন্স ও লস সীমা","<b>Starting balance</b> এ আপনার ব্যালেন্স দিন। <b>Max daily loss</b> % বা $ যেকোনোটায় দিতে পারেন, অন্যটা নিজে হিসাব হবে। কোনো দিনের লস এই সীমায় পৌঁছালে সেই দিনের কার্ড লাল হয়ে সতর্ক করবে। <b>Daily / Total profit target</b> ঘরে টার্গেট লিখুন, টার্গেট ছুঁলে দিনের পাশে 🎯 আসবে আর ব্যালেন্স কার্ডে অগ্রগতির বার দেখাবে।"],
 ["নম্বর ও ক্যালেন্ডার","<b>Monthly numbers</b> এ ব্যালেন্স, গ্রাফ, Win rate, Profit factor সব নিজে নিজে হিসাব হয়। ২০ দিনের ক্যালেন্ডারে প্রফিটের দিন <b>সবুজ</b>, লসের দিন <b>লাল</b>, আর ঘরে ট্যাপ করলে সেই দিনের কার্ডে চলে যাবেন।"],
 ["মার্কেট সেশন","<b>ফরেক্স মার্কেট সেশন</b> অংশে Sydney, Tokyo, London ও New York বাজার কখন খোলা তা আপনার সময় অনুযায়ী দেখায়। সবুজ রেখা = এখনকার সময়, গাঢ় বার = সেশন খোলা। উপরের ঘর থেকে আপনার দেশের সময় বেছে নিন।"],
@@ -782,4 +782,4 @@ try{if(!localStorage.getItem("mh-tour-done"))tour(0)}catch(e){}
 <button id="totop" type="button" aria-label="Back to top" style="position:fixed;left:14px;bottom:calc(70px + env(safe-area-inset-bottom,0px));z-index:40;width:44px;height:44px;border:0;border-radius:50%;font:inherit;font-size:20px;font-weight:800;color:#fff;background:linear-gradient(135deg,#0ea5e9,#6366f1);box-shadow:0 10px 24px rgba(99,102,241,.45);cursor:pointer">↑</button>
 <script>document.getElementById("totop").addEventListener("click",function(){window.scrollTo({top:0,behavior:"smooth"})});</script>
 </body>
- </html>
+                                       </html>
